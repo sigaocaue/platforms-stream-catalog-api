@@ -12,7 +12,7 @@ services:
     volumes:
       - .persistence/mysql:/var/lib/mysql/
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-netflix-content-api}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-stream-catalog}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_USER: ${MYSQL_USER:-user}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
