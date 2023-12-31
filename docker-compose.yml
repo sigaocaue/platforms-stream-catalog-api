@@ -1,0 +1,18 @@
+version: '3.8'
+
+volumes:
+  persistence:
+
+services:
+  mysql:
+    image: mysql:${MYSQL_VERSION:-8}
+    container_name: ${MYSQL_CONTAINER_NAME:-mysql_streaming-platforms-content-api}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - .persistence/mysql:/var/lib/mysql/
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-netflix-content-api}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_USER: ${MYSQL_USER:-user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}

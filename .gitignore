@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+.env
 
 # OS
 .DS_Store
@@ -27,6 +28,10 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+### Docker
+# Volumes
+.persistence
 
 ### Node template
 # Logs
@@ -133,7 +138,6 @@ dist
 
 # vuepress v2.x temp and cache directory
 .temp
-.cache
 
 # Docusaurus cache and generated files
 .docusaurus
