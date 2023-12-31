@@ -1,3 +1,5 @@
+import { PrismaModule } from '@modules/prisma/prisma.module';
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
@@ -9,6 +11,8 @@ import * as Services from './services';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    HttpModule,
+    PrismaModule,
     TerminusModule,
   ],
   controllers: [Controllers.HealthController, Controllers.NestRootController],
