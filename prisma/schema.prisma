@@ -15,6 +15,8 @@ model Person {
   nationality String?
 
   ContentContribution ContentContribution[]
+
+  @@map("persons")
 }
 
 model StreamingPlatform {
@@ -22,11 +24,16 @@ model StreamingPlatform {
   website String?
 
   contentAvailabilities ContentAvailability[]
+
+  @@map("streaming_platforms")
 }
 
 model ContentType {
-  name     String    @id
-  contents Content[]
+  name String @id
+
+  contents StreamingContent[]
+
+  @@map("content_types")
 }
 
 model ContributionRole {
@@ -34,6 +41,8 @@ model ContributionRole {
   description String?
 
   ContentContribution ContentContribution[]
+
+  @@map("contribution_roles")
 }
 
 model StreamingContent {
@@ -51,6 +60,7 @@ model StreamingContent {
   contentTitle        ContentTitle[]
 
   @@unique([contentTypeName, title, releaseDate])
+  @@map("streaming_content")
 }
 
 model ContentAvailability {
@@ -62,8 +72,9 @@ model ContentAvailability {
   content           StreamingContent  @relation(fields: [streamingContentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   streamingPlatform StreamingPlatform @relation(fields: [streamingPlatformId], references: [name], onDelete: Cascade, onUpdate: Cascade)
 
-  @@id([streamingPlatformId, contentId, entryDate])
-  @@unique([streamingPlatformId, contentId, exitDate])
+  @@id([streamingPlatformId, streamingContentId, entryDate])
+  @@unique([streamingPlatformId, streamingContentId, exitDate])
+  @@map("content_availabilities")
 }
 
 model ContentTitle {
@@ -73,7 +84,8 @@ model ContentTitle {
 
   content StreamingContent @relation(fields: [streamingContentId], references: [id])
 
-  @@id([contentId, country])
+  @@id([streamingContentId, country])
+  @@map("content_titles")
 }
 
 model ContentContribution {
@@ -85,5 +97,6 @@ model ContentContribution {
   person           Person           @relation(fields: [personId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   contributionRole ContributionRole @relation(fields: [contributionRoleName], references: [name], onDelete: Restrict, onUpdate: Cascade)
 
-  @@id([contentId, personId, contributionRoleName])
+  @@id([streamingContentId, personId, contributionRoleName])
+  @@map("content_contributions")
 }
