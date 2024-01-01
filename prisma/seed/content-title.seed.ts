@@ -1,5 +1,5 @@
 import { PrismaClient, ContentTitle } from '@prisma/client';
-import { ContentSeed } from './content.seed';
+import { StreamingContentSeed } from './streaming-content.seed';
 import { SeedInterface } from './seed.interface';
 import { SeedBase } from './seed.base';
 
@@ -12,20 +12,20 @@ export class ContentTitleSeed
   }
 
   public async seed(): Promise<ContentTitle[]> {
-    await new ContentSeed(this.prismaClient).seed();
+    await new StreamingContentSeed(this.prismaClient).seed();
     const data: ContentTitle[] = [
       {
-        contentId: 'movie.limitless',
+        streamingContentId: 'movie.limitless',
         country: 'Brazil',
         localTitle: 'Sem limites',
       },
       {
-        contentId: 'movie.the-hangover',
+        streamingContentId: 'movie.the-hangover',
         country: 'Brazil',
         localTitle: 'Se Beber, Não Case!',
       },
       {
-        contentId: 'movie.joker',
+        streamingContentId: 'movie.joker',
         country: 'Brazil',
         localTitle: 'Coringa',
       },
@@ -34,8 +34,8 @@ export class ContentTitleSeed
     for (const contentTitle of data) {
       await this.prismaClient.contentTitle.upsert({
         where: {
-          contentId_country: {
-            contentId: contentTitle.contentId,
+          streamingContentId_country: {
+            streamingContentId: contentTitle.streamingContentId,
             country: contentTitle.country,
           },
         },

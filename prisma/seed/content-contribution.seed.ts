@@ -1,5 +1,5 @@
 import { PrismaClient, ContentContribution } from '@prisma/client';
-import { ContentSeed } from './content.seed';
+import { StreamingContentSeed } from './streaming-content.seed';
 import { ContributionRoleSeed } from './contribution-role.seed';
 import { PersonSeed } from './person.seed';
 import { SeedInterface } from './seed.interface';
@@ -14,23 +14,23 @@ export class ContentContributionSeed
   }
 
   public async seed(): Promise<ContentContribution[]> {
-    await new ContentSeed(this.prismaClient).seed();
+    await new StreamingContentSeed(this.prismaClient).seed();
     await new ContributionRoleSeed(this.prismaClient).seed();
     await new PersonSeed(this.prismaClient).seed();
 
     const data: ContentContribution[] = [
       {
-        contentId: 'movie.limitless',
+        streamingContentId: 'movie.limitless',
         personId: 'bradley-cooper',
         contributionRoleName: 'actor',
       },
       {
-        contentId: 'movie.the-hangover',
+        streamingContentId: 'movie.the-hangover',
         personId: 'bradley-cooper',
         contributionRoleName: 'actor',
       },
       {
-        contentId: 'movie.the-hangover',
+        streamingContentId: 'movie.the-hangover',
         personId: 'todd-phillips',
         contributionRoleName: 'director',
       },
@@ -39,7 +39,7 @@ export class ContentContributionSeed
     for (const contentContribution of data) {
       await this.prismaClient.contentContribution.upsert({
         where: {
-          contentId_personId_contributionRoleName: contentContribution,
+          streamingContentId_personId_contributionRoleName: contentContribution,
         },
         create: contentContribution,
         update: {},

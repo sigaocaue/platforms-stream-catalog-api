@@ -1,22 +1,22 @@
-import { PrismaClient, Content } from '@prisma/client';
+import { PrismaClient, StreamingContent } from '@prisma/client';
 import { ContentTypeSeed } from './content-type.seed';
 import { SeedInterface } from './seed.interface';
 import { SeedBase } from './seed.base';
 import { StreamingPlatformSeed } from './streaming-platform.seed';
 
-export class ContentSeed
-  extends SeedBase<Content>
-  implements SeedInterface<Content>
+export class StreamingContentSeed
+  extends SeedBase<StreamingContent>
+  implements SeedInterface<StreamingContent>
 {
   constructor(protected readonly prismaClient: PrismaClient) {
     super();
   }
 
-  public async seed(): Promise<Content[]> {
+  public async seed(): Promise<StreamingContent[]> {
     await new ContentTypeSeed(this.prismaClient).seed();
     await new StreamingPlatformSeed(this.prismaClient).seed();
 
-    const data: Content[] = [
+    const data: StreamingContent[] = [
       {
         id: 'movie.limitless',
         contentTypeName: 'movie',
@@ -56,7 +56,7 @@ export class ContentSeed
     ];
 
     for (const streamContent of data) {
-      await this.prismaClient.content.upsert({
+      await this.prismaClient.streamingContent.upsert({
         where: {
           contentTypeName_title_releaseDate: {
             contentTypeName: streamContent.contentTypeName,
@@ -79,4 +79,4 @@ export class ContentSeed
   }
 }
 
-export default ContentSeed;
+export default StreamingContentSeed;

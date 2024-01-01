@@ -1,5 +1,5 @@
 import { PrismaClient, ContentAvailability } from '@prisma/client';
-import { ContentSeed } from './content.seed';
+import { StreamingContentSeed } from './streaming-content.seed';
 import { SeedInterface } from './seed.interface';
 import { SeedBase } from './seed.base';
 import { StreamingPlatformSeed } from './streaming-platform.seed';
@@ -14,48 +14,48 @@ export class ContentAvailabilitySeed
 
   public async seed(): Promise<ContentAvailability[]> {
     await new StreamingPlatformSeed(this.prismaClient).seed();
-    await new ContentSeed(this.prismaClient).seed();
+    await new StreamingContentSeed(this.prismaClient).seed();
 
     const data: ContentAvailability[] = [
       {
         streamingPlatformId: 'Netflix',
-        contentId: 'tv-show.cyberpunk-edgerunners',
+        streamingContentId: 'tv-show.cyberpunk-edgerunners',
         entryDate: new Date(2022, 8, 13),
         exitDate: null,
       },
       {
         streamingPlatformId: 'Netflix',
-        contentId: 'movie.limitless',
+        streamingContentId: 'movie.limitless',
         entryDate: new Date(2021, 1, 20),
         exitDate: new Date(2021, 11, 25),
       },
       {
         streamingPlatformId: 'Prime Video',
-        contentId: 'movie.limitless',
+        streamingContentId: 'movie.limitless',
         entryDate: new Date(2022, 11, 10),
         exitDate: null,
       },
       {
         streamingPlatformId: 'Star Plus',
-        contentId: 'movie.limitless',
+        streamingContentId: 'movie.limitless',
         entryDate: new Date(2022, 11, 10),
         exitDate: new Date(2023, 2, 10),
       },
       {
         streamingPlatformId: 'Prime Video',
-        contentId: 'movie.the-hangover',
+        streamingContentId: 'movie.the-hangover',
         entryDate: new Date(2023, 0, 15),
         exitDate: null,
       },
       {
         streamingPlatformId: 'HBO Max',
-        contentId: 'movie.the-hangover',
+        streamingContentId: 'movie.the-hangover',
         entryDate: new Date(2021, 10, 5),
         exitDate: null,
       },
       {
         streamingPlatformId: 'HBO Max',
-        contentId: 'movie.joker',
+        streamingContentId: 'movie.joker',
         entryDate: new Date(2023, 0, 5),
         exitDate: null,
       },
@@ -64,9 +64,9 @@ export class ContentAvailabilitySeed
     for (const contentAvailability of data) {
       await this.prismaClient.contentAvailability.upsert({
         where: {
-          streamingPlatformId_contentId_entryDate: {
+          streamingPlatformId_streamingContentId_entryDate: {
             streamingPlatformId: contentAvailability.streamingPlatformId,
-            contentId: contentAvailability.contentId,
+            streamingContentId: contentAvailability.streamingContentId,
             entryDate: contentAvailability.entryDate,
           },
         },

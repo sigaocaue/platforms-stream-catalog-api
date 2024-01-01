@@ -8,11 +8,12 @@ datasource db {
 }
 
 model Person {
-  id                  String                @id @default(uuid())
-  name                String
-  pseudonym           String?
-  birthDate           DateTime?
-  nationality         String?
+  id          String    @id @default(uuid())
+  name        String
+  pseudonym   String?
+  birthDate   DateTime? @map("birth_date")
+  nationality String?
+
   ContentContribution ContentContribution[]
 }
 
@@ -29,19 +30,21 @@ model ContentType {
 }
 
 model ContributionRole {
-  name                String                @id
-  description         String?
+  name        String  @id
+  description String?
+
   ContentContribution ContentContribution[]
 }
 
-model Content {
-  id                  String                @id @default(uuid())
-  contentTypeName     String
-  title               String
-  releaseDate         DateTime?
-  imdbRating          Float?
-  duration            Int?
-  storyline           String?
+model StreamingContent {
+  id              String    @id @default(uuid())
+  contentTypeName String    @map("content_type_name")
+  title           String
+  releaseDate     DateTime? @map("release_date")
+  imdbRating      Float?    @map("imdb_rating")
+  duration        Int?
+  storyline       String?
+
   contentType         ContentType           @relation(fields: [contentTypeName], references: [name], onDelete: Restrict, onUpdate: Cascade)
   contentAvailability ContentAvailability[]
   contentPersons      ContentContribution[]
@@ -51,12 +54,12 @@ model Content {
 }
 
 model ContentAvailability {
-  streamingPlatformId String
-  contentId           String
-  entryDate           DateTime
-  exitDate            DateTime?
+  streamingPlatformId String    @map("streaming_platform_id")
+  streamingContentId  String    @map("content_id")
+  entryDate           DateTime  @map("entry_date")
+  exitDate            DateTime? @map("exit_date")
 
-  content           Content           @relation(fields: [contentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  content           StreamingContent  @relation(fields: [streamingContentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   streamingPlatform StreamingPlatform @relation(fields: [streamingPlatformId], references: [name], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([streamingPlatformId, contentId, entryDate])
@@ -64,21 +67,21 @@ model ContentAvailability {
 }
 
 model ContentTitle {
-  contentId  String
-  country    String
-  localTitle String
+  streamingContentId String @map("content_id")
+  country            String
+  localTitle         String @map("local_title")
 
-  content Content @relation(fields: [contentId], references: [id])
+  content StreamingContent @relation(fields: [streamingContentId], references: [id])
 
   @@id([contentId, country])
 }
 
 model ContentContribution {
-  contentId            String
-  personId             String
-  contributionRoleName String
+  streamingContentId   String @map("content_id")
+  personId             String @map("person_id")
+  contributionRoleName String @map("contribution_role_name")
 
-  content          Content          @relation(fields: [contentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  content          StreamingContent @relation(fields: [streamingContentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   person           Person           @relation(fields: [personId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   contributionRole ContributionRole @relation(fields: [contributionRoleName], references: [name], onDelete: Restrict, onUpdate: Cascade)
 
