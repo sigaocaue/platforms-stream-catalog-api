@@ -1,4 +1,5 @@
 import { PrismaModule } from '@modules/prisma/prisma.module';
+import { StreamingContentModule } from '@modules/streaming-content/streaming-content.module';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -13,6 +14,7 @@ import * as Services from './services';
     }),
     HttpModule,
     PrismaModule,
+    StreamingContentModule,
     TerminusModule,
   ],
   controllers: [Controllers.HealthController, Controllers.NestRootController],
