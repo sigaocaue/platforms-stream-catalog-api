@@ -15,22 +15,27 @@ export class StreamingPlatformSeed
       {
         name: 'Netflix',
         website: 'https://www.netflix.com/br/',
+        createdAt: new Date(),
       },
       {
         name: 'Prime Video',
         website: 'https://www.primevideo.com/',
+        createdAt: new Date(),
       },
       {
         name: 'Disney Plus',
         website: 'https://www.disneyplus.com/pt-br/home',
+        createdAt: new Date(),
       },
       {
         name: 'Star Plus',
         website: 'https://www.starplus.com/pt-br/home',
+        createdAt: new Date(),
       },
       {
         name: 'HBO Max',
         website: 'https://www.hbomax.com/',
+        createdAt: new Date(),
       },
     ];
 

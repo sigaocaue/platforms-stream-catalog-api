@@ -15,14 +15,17 @@ export class ContributionRoleSeed
       {
         name: 'actor',
         description: null,
+        createdAt: new Date(),
       },
       {
         name: 'director',
         description: 'film director',
+        createdAt: new Date(),
       },
       {
         name: 'screenwriter',
         description: null,
+        createdAt: new Date(),
       },
     ];
 

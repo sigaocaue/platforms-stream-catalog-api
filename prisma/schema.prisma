@@ -13,15 +13,17 @@ model Person {
   pseudonym   String?
   birthDate   DateTime? @map("birth_date")
   nationality String?
+  createdAt   DateTime? @default(now()) @map("created_at")
 
-  ContentContribution ContentContribution[]
+  contentContributions ContentContribution[]
 
   @@map("persons")
 }
 
 model StreamingPlatform {
-  name    String  @id @default(uuid())
-  website String?
+  name      String   @id @default(uuid())
+  website   String?
+  createdAt DateTime @default(now()) @map("created_at")
 
   contentAvailabilities ContentAvailability[]
 
@@ -29,18 +31,20 @@ model StreamingPlatform {
 }
 
 model ContentType {
-  name String @id
+  name      String   @id
+  createdAt DateTime @default(now()) @map("created_at")
 
-  contents StreamingContent[]
+  streamingContents StreamingContent[]
 
   @@map("content_types")
 }
 
 model ContributionRole {
-  name        String  @id
+  name        String    @id
   description String?
+  createdAt   DateTime? @default(now()) @map("created_at")
 
-  ContentContribution ContentContribution[]
+  contentContributions ContentContribution[]
 
   @@map("contribution_roles")
 }
@@ -52,51 +56,57 @@ model StreamingContent {
   releaseDate     DateTime? @map("release_date")
   imdbRating      Float?    @map("imdb_rating")
   duration        Int?
-  storyline       String?
+  storyline       String?   @db.Text
+  createdAt       DateTime? @default(now()) @map("created_at")
 
-  contentType         ContentType           @relation(fields: [contentTypeName], references: [name], onDelete: Restrict, onUpdate: Cascade)
-  contentAvailability ContentAvailability[]
-  contentPersons      ContentContribution[]
-  contentTitle        ContentTitle[]
+  contentType           ContentType           @relation(fields: [contentTypeName], references: [name], onDelete: Restrict, onUpdate: Cascade)
+  contentAvailabilities ContentAvailability[]
+  contentContributions  ContentContribution[]
+  foreignContentTitles  ForeignContentTitle[]
 
-  @@unique([contentTypeName, title, releaseDate])
+  @@unique(name: "uniqueKey", [contentTypeName, title, releaseDate])
   @@map("streaming_content")
 }
 
 model ContentAvailability {
+  id                  String    @id @default(uuid())
   streamingPlatformId String    @map("streaming_platform_id")
   streamingContentId  String    @map("content_id")
   entryDate           DateTime  @map("entry_date")
   exitDate            DateTime? @map("exit_date")
+  createdAt           DateTime? @default(now()) @map("created_at")
 
-  content           StreamingContent  @relation(fields: [streamingContentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  streamingContent  StreamingContent  @relation(fields: [streamingContentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   streamingPlatform StreamingPlatform @relation(fields: [streamingPlatformId], references: [name], onDelete: Cascade, onUpdate: Cascade)
 
-  @@id([streamingPlatformId, streamingContentId, entryDate])
-  @@unique([streamingPlatformId, streamingContentId, exitDate])
+  @@unique(name: "uniqueKey", [streamingPlatformId, streamingContentId, exitDate])
   @@map("content_availabilities")
 }
 
-model ContentTitle {
-  streamingContentId String @map("content_id")
+model ForeignContentTitle {
+  id                 String    @id @default(uuid())
+  streamingContentId String    @map("streaming_content_id")
   country            String
-  localTitle         String @map("local_title")
+  localTitle         String    @map("local_title")
+  createdAt          DateTime? @default(now()) @map("created_at")
 
-  content StreamingContent @relation(fields: [streamingContentId], references: [id])
+  streamingContent StreamingContent @relation(fields: [streamingContentId], references: [id])
 
-  @@id([streamingContentId, country])
-  @@map("content_titles")
+  @@unique(name: "uniqueKey", [streamingContentId, country])
+  @@map("foreign_content_title")
 }
 
 model ContentContribution {
-  streamingContentId   String @map("content_id")
-  personId             String @map("person_id")
-  contributionRoleName String @map("contribution_role_name")
+  id                   String    @id @default(uuid())
+  streamingContentId   String    @map("streaming_content_id")
+  personId             String    @map("person_id")
+  contributionRoleName String    @map("contribution_role_name")
+  createdAt            DateTime? @default(now()) @map("created_at")
 
-  content          StreamingContent @relation(fields: [streamingContentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  streamingContent StreamingContent @relation(fields: [streamingContentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   person           Person           @relation(fields: [personId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   contributionRole ContributionRole @relation(fields: [contributionRoleName], references: [name], onDelete: Restrict, onUpdate: Cascade)
 
-  @@id([streamingContentId, personId, contributionRoleName])
+  @@unique(name: "uniqueKey", [streamingContentId, personId, contributionRoleName])
   @@map("content_contributions")
 }

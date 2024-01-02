@@ -20,29 +20,41 @@ export class ContentContributionSeed
 
     const data: ContentContribution[] = [
       {
+        id: '0ee920f0-bc17-4709-989a-b7628fe63560',
         streamingContentId: 'movie.limitless',
         personId: 'bradley-cooper',
         contributionRoleName: 'actor',
+        createdAt: new Date(),
       },
       {
+        id: '206000fe-cf62-4f09-ad86-c3a4cbf05896',
         streamingContentId: 'movie.the-hangover',
         personId: 'bradley-cooper',
         contributionRoleName: 'actor',
+        createdAt: new Date(),
       },
       {
+        id: '99832493-84ac-41a1-97c0-2603675522d0',
         streamingContentId: 'movie.the-hangover',
         personId: 'todd-phillips',
         contributionRoleName: 'director',
+        createdAt: new Date(),
       },
     ];
 
     for (const contentContribution of data) {
       await this.prismaClient.contentContribution.upsert({
         where: {
-          streamingContentId_personId_contributionRoleName: contentContribution,
+          uniqueKey: {
+            streamingContentId: contentContribution.streamingContentId,
+            personId: contentContribution.personId,
+            contributionRoleName: contentContribution.contributionRoleName,
+          },
         },
         create: contentContribution,
-        update: {},
+        update: {
+          id: contentContribution.id,
+        },
       });
     }
 

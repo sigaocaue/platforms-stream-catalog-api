@@ -26,6 +26,7 @@ export class PersonSeed
           pseudonym: faker.datatype.boolean() ? faker.person.firstName() : null,
           birthDate: faker.datatype.boolean() ? faker.date.past() : null,
           nationality: faker.location.country(),
+          createdAt: new Date(),
         }),
       ),
       {
@@ -34,6 +35,7 @@ export class PersonSeed
         pseudonym: null,
         birthDate: null,
         nationality: null,
+        createdAt: new Date(),
       },
       {
         id: 'todd-phillips',
@@ -41,6 +43,7 @@ export class PersonSeed
         pseudonym: null,
         birthDate: null,
         nationality: null,
+        createdAt: new Date(),
       },
       {
         id: 'joaquin-phoenix',
@@ -48,6 +51,7 @@ export class PersonSeed
         pseudonym: null,
         birthDate: null,
         nationality: null,
+        createdAt: new Date(),
       },
       {
         id: 'zach-galifianakis',
@@ -55,6 +59,7 @@ export class PersonSeed
         pseudonym: null,
         birthDate: null,
         nationality: null,
+        createdAt: new Date(),
       },
       {
         id: 'ed-helms',
@@ -62,6 +67,7 @@ export class PersonSeed
         pseudonym: 'Ed Helms',
         birthDate: null,
         nationality: null,
+        createdAt: new Date(),
       },
     ];
 

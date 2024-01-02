@@ -14,12 +14,19 @@ export class ContentTypeSeed
     const contentsTypes: ContentType[] = [
       {
         name: 'movie',
+        createdAt: new Date(),
       },
       {
         name: 'tv show',
+        createdAt: new Date(),
       },
       {
         name: 'game',
+        createdAt: new Date(),
+      },
+      {
+        name: 'book',
+        createdAt: new Date(),
       },
     ];
 

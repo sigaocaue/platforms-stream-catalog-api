@@ -25,6 +25,7 @@ export class StreamingContentSeed
         imdbRating: 7.4,
         duration: 105,
         storyline: null,
+        createdAt: new Date(),
       },
       {
         id: 'movie.the-hangover',
@@ -34,6 +35,7 @@ export class StreamingContentSeed
         imdbRating: 7.7,
         duration: 100,
         storyline: null,
+        createdAt: new Date(),
       },
       {
         id: 'tv-show.cyberpunk-edgerunners',
@@ -43,6 +45,7 @@ export class StreamingContentSeed
         imdbRating: 8.3,
         duration: 24,
         storyline: null,
+        createdAt: new Date(),
       },
       {
         id: 'movie.joker',
@@ -52,13 +55,14 @@ export class StreamingContentSeed
         imdbRating: 7.7,
         duration: 122,
         storyline: null,
+        createdAt: new Date(),
       },
     ];
 
     for (const streamContent of data) {
       await this.prismaClient.streamingContent.upsert({
         where: {
-          contentTypeName_title_releaseDate: {
+          uniqueKey: {
             contentTypeName: streamContent.contentTypeName,
             title: streamContent.title,
             releaseDate: streamContent.releaseDate as Date,
