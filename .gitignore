@@ -1,7 +1,6 @@
 # compiled output
 /dist
 /node_modules
-.env
 
 # OS
 .DS_Store
@@ -164,3 +163,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+### User files
+local-debug
